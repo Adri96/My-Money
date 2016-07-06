@@ -22,7 +22,7 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         self.tableView2.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
         loadData()
         updateLabel()
-        var swipeRight = UISwipeGestureRecognizer(target: self, action: "respondToSwipeGesture:")
+        let swipeRight = UISwipeGestureRecognizer(target: self, action: "respondToSwipeGesture:")
         swipeRight.direction = UISwipeGestureRecognizerDirection.Left
         self.view.addGestureRecognizer(swipeRight)
         tableView2.hidden = true
@@ -38,22 +38,22 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
             arrayIncome = []
             arrayIncomeName = []
         }else{
-            arrayIncome = defaults.objectForKey("arrayIncome") as Array
-            arrayIncomeName = defaults.objectForKey("arrayIncomeName") as Array
+            arrayIncome = defaults.objectForKey("arrayIncome") as! Array
+            arrayIncomeName = defaults.objectForKey("arrayIncomeName") as! Array
         }
         
         if defaults.objectForKey("arrayWaste") == nil {
             arrayWaste = []
             arrayWasteName = []
         }else{
-            arrayWaste = defaults.objectForKey("arrayWaste") as Array
-            arrayWasteName = defaults.objectForKey("arrayWasteName") as Array
+            arrayWaste = defaults.objectForKey("arrayWaste")as! Array
+            arrayWasteName = defaults.objectForKey("arrayWasteName") as! Array
         }
         
         if defaults.objectForKey("moneyCount") == nil {
             moneyCount = 0.0
         }else{
-            moneyCount = defaults.objectForKey("moneyCount") as Double
+            moneyCount = defaults.objectForKey("moneyCount") as! Double
         }
     }
     override func didReceiveMemoryWarning() {
@@ -83,24 +83,24 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell:UITableViewCell = self.tableView.dequeueReusableCellWithIdentifier("cell") as UITableViewCell
+        var cell:UITableViewCell! = self.tableView.dequeueReusableCellWithIdentifier("cell")
         cell = UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "CellSubtitle")
         if (tableView == tableView2){
-            cell.textLabel.text = self.arrayIncomeName[indexPath.row]
+            cell.textLabel!.text = self.arrayIncomeName[indexPath.row]
             cell.detailTextLabel?.text = self.arrayIncome[indexPath.row].description
             cell.backgroundColor = UIColor.clearColor()
             cell.opaque = false
             cell.backgroundView = nil
-            cell.textLabel.textColor = UIColor.orangeColor()
+            cell.textLabel!.textColor = UIColor.orangeColor()
             cell.detailTextLabel?.textColor = UIColor.orangeColor()
             return cell
         } else {
-            cell.textLabel.text = self.arrayWasteName[indexPath.row]
+            cell.textLabel!.text = self.arrayWasteName[indexPath.row]
             cell.detailTextLabel?.text = self.arrayWaste[indexPath.row].description
             cell.backgroundColor = UIColor.clearColor()
             cell.opaque = false
             cell.backgroundView = nil
-            cell.textLabel.textColor = UIColor.orangeColor()
+            cell.textLabel!.textColor = UIColor.orangeColor()
             cell.detailTextLabel?.textColor = UIColor.orangeColor()
             return cell
         }
@@ -110,7 +110,7 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         
     }
     
-    func tableView(tableView: UITableView!, canEditRowAtIndexPath indexPath: NSIndexPath!) -> Bool {
+    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         return true
     }
     
@@ -131,7 +131,7 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         }
     }
    
-    func tableView(tableView: UITableView!, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath!) {
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if (editingStyle == UITableViewCellEditingStyle.Delete) {
             let i = indexPath.row
             if (expensesSelected){
@@ -157,4 +157,7 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         }
     }
     
+    override func prefersStatusBarHidden() -> Bool {
+        return true
+    }
 }

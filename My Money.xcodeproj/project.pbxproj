@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		8534D0491A9B1A61007B8BEA /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8534D0481A9B1A61007B8BEA /* TableViewController.swift */; };
+		8548571C1B41F7A200BB1C66 /* ios in Resources */ = {isa = PBXBuildFile; fileRef = 8548571B1B41F7A200BB1C66 /* ios */; };
 		85A09E911A98C7F9000C9EC3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85A09E901A98C7F9000C9EC3 /* AppDelegate.swift */; };
 		85A09E931A98C7F9000C9EC3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85A09E921A98C7F9000C9EC3 /* ViewController.swift */; };
 		85A09E961A98C7F9000C9EC3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 85A09E941A98C7F9000C9EC3 /* Main.storyboard */; };
@@ -27,8 +28,22 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		85DF7A721B540D1A00C5E42B /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		8534D0481A9B1A61007B8BEA /* TableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
+		8548571B1B41F7A200BB1C66 /* ios */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ios; sourceTree = "<group>"; };
 		85A09E8B1A98C7F9000C9EC3 /* My Money.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "My Money.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		85A09E8F1A98C7F9000C9EC3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		85A09E901A98C7F9000C9EC3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -86,6 +101,7 @@
 				8534D0481A9B1A61007B8BEA /* TableViewController.swift */,
 				85E0B20F1AA4BC8C00A7948E /* TransitionManager.swift */,
 				85A09E941A98C7F9000C9EC3 /* Main.storyboard */,
+				8548571B1B41F7A200BB1C66 /* ios */,
 				85A09E971A98C7F9000C9EC3 /* Images.xcassets */,
 				85A09E991A98C7F9000C9EC3 /* LaunchScreen.xib */,
 				85A09E8E1A98C7F9000C9EC3 /* Supporting Files */,
@@ -128,6 +144,7 @@
 				85A09E871A98C7F9000C9EC3 /* Sources */,
 				85A09E881A98C7F9000C9EC3 /* Frameworks */,
 				85A09E891A98C7F9000C9EC3 /* Resources */,
+				85DF7A721B540D1A00C5E42B /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
@@ -162,11 +179,13 @@
 		85A09E831A98C7F9000C9EC3 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0610;
+				LastSwiftUpdateCheck = 0700;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Adria  Munuera";
 				TargetAttributes = {
 					85A09E8A1A98C7F9000C9EC3 = {
 						CreatedOnToolsVersion = 6.1;
+						DevelopmentTeam = Y2HPAPH8NT;
 					};
 					85A09E9F1A98C7F9000C9EC3 = {
 						CreatedOnToolsVersion = 6.1;
@@ -200,6 +219,7 @@
 			files = (
 				85A09E961A98C7F9000C9EC3 /* Main.storyboard in Resources */,
 				85A09E9B1A98C7F9000C9EC3 /* LaunchScreen.xib in Resources */,
+				8548571C1B41F7A200BB1C66 /* ios in Resources */,
 				85A09E981A98C7F9000C9EC3 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -283,6 +303,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -343,20 +364,30 @@
 		85A09EAB1A98C7F9000C9EC3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-4";
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "My Money/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "adria.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
 		85A09EAC1A98C7F9000C9EC3 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-4";
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "My Money/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "adria.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};
@@ -374,6 +405,7 @@
 				);
 				INFOPLIST_FILE = "My MoneyTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "adria.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/My Money.app/My Money";
 			};
@@ -389,6 +421,7 @@
 				);
 				INFOPLIST_FILE = "My MoneyTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "adria.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/My Money.app/My Money";
 			};

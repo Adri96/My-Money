@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>My Money Widget.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
 		<key>My Money.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -18,6 +23,11 @@
 			<true/>
 		</dict>
 		<key>85A09E9F1A98C7F9000C9EC3</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>85DF7A631B540D1A00C5E42B</key>
 		<dict>
 			<key>primary</key>
 			<true/>

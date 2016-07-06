@@ -5,7 +5,7 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    //falta fer inici: decidir password, diners totals inicials, tutorial de com funciona la app. Idioma: english, castellano, catala, alemany, frances, xines (albert). Opcions. Comas en els milers. Diferents mides.
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.

@@ -1,7 +1,7 @@
 
 import UIKit
-//falta: point Multpilicar a la menys 1 o giraro aplicar canvis i tornarho a girar
-class ViewController: UIViewController {
+
+class ViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var priceTag: UILabel!
     @IBOutlet weak var productNameTextField: UITextField!
@@ -15,10 +15,15 @@ class ViewController: UIViewController {
     var arrayWasteName = [String]()
     var number: Double = 0.0
     var moneyCount: Double = 0.0
-    var notCompleted = true
+    var monthA: Int = 0
     var pointPushed = false
     var zeroEnZero = false
     var zeroEnZeroPrimer = true
+    @IBOutlet var passwordField: UITextField!
+    @IBOutlet var passwordView: UIView!
+     var firstTime: Bool = false
+    var passwordPassed: Bool = false
+    @IBOutlet var enterButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,91 +31,137 @@ class ViewController: UIViewController {
             arrayIncome = []
             arrayIncomeName = []
         }else{
-            arrayIncome = defaults.objectForKey("arrayIncome") as Array
-            arrayIncomeName = defaults.objectForKey("arrayIncomeName") as Array
+            arrayIncome = defaults.objectForKey("arrayIncome") as! Array
+            arrayIncomeName = defaults.objectForKey("arrayIncomeName") as! Array
         }
         
         if defaults.objectForKey("arrayWaste") == nil {
             arrayWaste = []
             arrayWasteName = []
         }else{
-            arrayWaste = defaults.objectForKey("arrayWaste") as Array
-            arrayWasteName = defaults.objectForKey("arrayWasteName") as Array
+            arrayWaste = defaults.objectForKey("arrayWaste")as! Array
+            arrayWasteName = defaults.objectForKey("arrayWasteName")as! Array
         }
         if defaults.objectForKey("moneyCount") == nil {
             moneyCount = 0.0
         }else{
-            moneyCount = defaults.objectForKey("moneyCount") as Double
+            moneyCount = defaults.objectForKey("moneyCount")as! Double
             
         }
         
-        if defaults.objectForKey("notCompleted") == nil {
-            notCompleted = true
-        }else{
-            notCompleted = defaults.objectForKey("notCompleted") as Bool
+        if defaults.objectForKey("monthA") == nil{
+            monthA = 0
+        } else {
+            monthA = defaults.objectForKey("monthA") as! Int
         }
         
-        var swipeRight = UISwipeGestureRecognizer(target: self, action: "respondToSwipeGesture:")
+        let swipeRight = UISwipeGestureRecognizer(target: self, action: "respondToSwipeGesture:")
         swipeRight.direction = UISwipeGestureRecognizerDirection.Right
         self.view.addGestureRecognizer(swipeRight)
-        
+
         let date = NSDate()
         let calendar = NSCalendar.currentCalendar()
-        let components = calendar.components(.CalendarUnitDay, fromDate: date)
-        let day = components.day
-        if day == 1{
-            if notCompleted{
-                var n = 0.0
-                for(var i = 0; i < arrayIncome.count; i++){
-                    n = n + arrayIncome[i]
-                }
-                moneyCount = moneyCount + n;
-                defaults.setObject(moneyCount, forKey: "moneyCount")
-                var alert = UIAlertController(title: "A new month is here!", message: "All the income and expenses values have been charged", preferredStyle: UIAlertControllerStyle.Alert)
-                alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
-                self.presentViewController(alert, animated: true, completion: nil)
-                notCompleted = false
+        let components = calendar.component(.Month, fromDate: date)
+        let month = components
+        if month > monthA && monthA != 0{
+            print(month)
+            var n = 0.0
+            for(var i = 0; i < arrayIncome.count; i++){
+                n = n + arrayIncome[i]
             }
-        }else if day == 2{
-            notCompleted = true
+            moneyCount = moneyCount + n;
+            defaults.setObject(moneyCount, forKey: "moneyCount")
+            let alert = UIAlertController(title: "A new month is here!", message: "All the income and expenses values have been charged", preferredStyle: UIAlertControllerStyle.Alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
+            self.presentViewController(alert, animated: true, completion: nil)
         }
-        defaults.setObject(notCompleted, forKey: "notCompleted")
+        
+        defaults.setObject(month, forKey: "monthA")
+        productNameTextField.delegate = self
+        
+        if defaults.objectForKey("firstTime") == nil {
+            firstTime = true
+            passwordField.secureTextEntry = false
+            print(enterButton.titleLabel?.text)
+            enterButton.titleLabel?.text = "new password"
+            print(enterButton.titleLabel?.text)
+        }else{
+            firstTime = defaults.objectForKey("firstTime")as! Bool
+            passwordField.secureTextEntry = true
+        }
+        defaults.setBool(false, forKey: "firstTime")
+        passwordField.becomeFirstResponder()
     }
     
-    override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         view.endEditing(true)
-        super.touchesBegan(touches, withEvent: event)
+        super.touchesBegan(touches as Set<UITouch>, withEvent: event)
+    }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return true
+    }
+    
+    @IBAction func goPassword() {
+            if(firstTime) {
+                self.view.endEditing(true)
+                defaults.setObject(passwordField.text, forKey: "password")
+                self.view.endEditing(true)
+                passwordPassed = true
+                goToMainView()
+                print("OK")
+            } else {
+                let password = defaults.objectForKey("password") as! String
+                if(passwordField.text == password){
+                    self.view.endEditing(true)
+                    passwordPassed = true
+                    goToMainView()
+                    print("OK")
+                } else {
+                    print("Wrong password")
+                }
+            }
+    }
+    
+    func goToMainView() {
+        if(passwordPassed) {
+            passwordView.hidden = true
+        }
     }
     
     func respondToSwipeGesture(gesture: UIGestureRecognizer){
-        let view2 = self.storyboard?.instantiateViewControllerWithIdentifier("view2") as TableViewController
-        //var modalTransitionStyle: UIModalTransitionStyle = .FlipHorizontal
-        self.presentViewController(view2, animated: true, completion: nil)
+        if(passwordPassed) {
+            let view2 = self.storyboard?.instantiateViewControllerWithIdentifier("view2") as! TableViewController
+            self.presentViewController(view2, animated: true, completion: nil)
+        }
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
     @IBAction func clear(sender: UIButton) {
         enter = 0
         decimal = 0
         zeroEnZero = false
         zeroEnZeroPrimer = true
         updateLabel()
+        pointPushed = true
         point(pointButton)
+        productNameTextField.text = "Name"
     }
     
     @IBAction func income(sender: UIButton){
         if productNameTextField.text == "Name"{
-            var alert = UIAlertController(title: "No income name", message: "Write a new one!", preferredStyle: UIAlertControllerStyle.Alert)
+            let alert = UIAlertController(title: "No income name", message: "Write a new one!", preferredStyle: UIAlertControllerStyle.Alert)
             alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
             self.presentViewController(alert, animated: true, completion: nil)
         }else{
             numberValue()
             arrayIncome.append(number)
-            arrayIncomeName.append(productNameTextField.text)
+            arrayIncomeName.append(productNameTextField!.text!)
             priceTag.text = "OK!"
             defaults.setObject(arrayIncome, forKey: "arrayIncome")
             defaults.setObject(arrayIncomeName, forKey: "arrayIncomeName")
@@ -121,13 +172,13 @@ class ViewController: UIViewController {
     
     @IBAction func expenses(sender: UIButton){
         if productNameTextField.text == "Name"{
-            var alert = UIAlertController(title: "No expenses name", message: "Write a new one!", preferredStyle: UIAlertControllerStyle.Alert)
+            let alert = UIAlertController(title: "No expenses name", message: "Write a new one!", preferredStyle: UIAlertControllerStyle.Alert)
             alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
             self.presentViewController(alert, animated: true, completion: nil)
         }else{
             numberValue()
             arrayIncome.append(-number)
-            arrayIncomeName.append(productNameTextField.text)
+            arrayIncomeName.append(productNameTextField.text!)
             priceTag.text = "OK!"
             defaults.setObject(arrayIncome, forKey: "arrayIncome")
             defaults.setObject(arrayIncomeName, forKey: "arrayIncomeName")
@@ -244,7 +295,7 @@ class ViewController: UIViewController {
     
     @IBAction func add(sender: UIButton) {
         if productNameTextField.text == "Name"{
-            var alert = UIAlertController(title: "No aportation of money name", message: "Write a new one!", preferredStyle: UIAlertControllerStyle.Alert)
+            let alert = UIAlertController(title: "No aportation of money name", message: "Write a new one!", preferredStyle: UIAlertControllerStyle.Alert)
             alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
             self.presentViewController(alert, animated: true, completion: nil)
         }else{
@@ -252,7 +303,7 @@ class ViewController: UIViewController {
             arrayWaste.append(number)
             moneyCount = moneyCount + number
             defaults.setObject(moneyCount, forKey: "moneyCount")
-            arrayWasteName.append(productNameTextField.text)
+            arrayWasteName.append(productNameTextField.text!)
             priceTag.text = "OK"
             defaults.setObject(arrayWaste, forKey: "arrayWaste")
             defaults.setObject(arrayWasteName, forKey: "arrayWasteName")
@@ -263,7 +314,7 @@ class ViewController: UIViewController {
     
     @IBAction func minus(sender: UIButton) {
         if productNameTextField.text == "Name"{
-            var alert = UIAlertController(title: "No expense name", message: "Write a new one!", preferredStyle: UIAlertControllerStyle.Alert)
+            let alert = UIAlertController(title: "No expense name", message: "Write a new one!", preferredStyle: UIAlertControllerStyle.Alert)
             alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
             self.presentViewController(alert, animated: true, completion: nil)
         }else{
@@ -271,7 +322,7 @@ class ViewController: UIViewController {
             arrayWaste.append(-number)
             moneyCount = moneyCount - number
             defaults.setObject(moneyCount, forKey: "moneyCount")
-            arrayWasteName.append(productNameTextField.text)
+            arrayWasteName.append(productNameTextField.text!)
             priceTag.text = "OK"
             defaults.setObject(arrayWaste, forKey: "arrayWaste")
             defaults.setObject(arrayWasteName, forKey: "arrayWasteName")
@@ -306,6 +357,7 @@ class ViewController: UIViewController {
     func updateLabel(){
         if zeroEnZero{
             if zeroEnZeroPrimer{
+                puntsAlsMilers(enter.description)
                 priceTag.text = enter.description + "." + decimal.description
                 zeroEnZeroPrimer = false
             } else{
@@ -315,6 +367,11 @@ class ViewController: UIViewController {
             priceTag.text = enter.description + "." + decimal.description
         }
         
+    }
+    
+    func puntsAlsMilers(var Nenter: String) -> String{
+        //print(Nenter[0])
+        return Nenter
     }
     
     func elevar(base: Int, exp: Int) -> Double{
@@ -350,5 +407,34 @@ class ViewController: UIViewController {
         zeroEnZeroPrimer = true
         productNameTextField.text = "Name"
     }
+    
+    override func prefersStatusBarHidden() -> Bool {
+        return true
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        if defaults.objectForKey("arrayIncome") == nil {
+            arrayIncome = []
+            arrayIncomeName = []
+        }else{
+            arrayIncome = defaults.objectForKey("arrayIncome") as! Array
+            arrayIncomeName = defaults.objectForKey("arrayIncomeName") as! Array
+        }
+        
+        if defaults.objectForKey("arrayWaste") == nil {
+            arrayWaste = []
+            arrayWasteName = []
+        }else{
+            arrayWaste = defaults.objectForKey("arrayWaste")as! Array
+            arrayWasteName = defaults.objectForKey("arrayWasteName")as! Array
+        }
+        if defaults.objectForKey("moneyCount") == nil {
+            moneyCount = 0.0
+        }else{
+            moneyCount = defaults.objectForKey("moneyCount")as! Double
+            
+        }
+    }
+    
 }
 

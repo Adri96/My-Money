@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class TransitionManager: UIPercentDrivenInteractiveTransition, UIViewControllerAnimatedTransitioning, UIViewControllerTransitioningDelegate, UIViewControllerInteractiveTransitioning  {
+class TransitionManager: UIPercentDrivenInteractiveTransition, UIViewControllerAnimatedTransitioning, UIViewControllerTransitioningDelegate {
     
     private var interactive = false
     private var enterPanGesture: UIScreenEdgePanGestureRecognizer!
@@ -52,21 +52,25 @@ class TransitionManager: UIPercentDrivenInteractiveTransition, UIViewControllerA
         let container = transitionContext.containerView()
         let fromView = transitionContext.viewForKey(UITransitionContextFromViewKey)!
         let toView = transitionContext.viewForKey(UITransitionContextToViewKey)!
-        let offScreenRight = CGAffineTransformMakeTranslation(container.frame.width, 0)
-        let offScreenLeft = CGAffineTransformMakeTranslation(-container.frame.width, 0)
+        let offScreenRight = CGAffineTransformMakeTranslation(container!.frame.width, 0)
+        let offScreenLeft = CGAffineTransformMakeTranslation(-container!.frame.width, 0)
         toView.transform = offScreenRight
-        container.addSubview(toView)
-        container.addSubview(fromView)
+        container!.addSubview(toView)
+        container!.addSubview(fromView)
         let duration = self.transitionDuration(transitionContext)
-        UIView.animateWithDuration(duration, delay: 0.0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.8, options: nil, animations: {
+        UIView.animateWithDuration(duration, animations: {
+            fromView.transform = offScreenLeft
+            toView.transform = CGAffineTransformIdentity
+        } )
+        /*UIView.animateWithDuration(duration, delay: 0.0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.8, options: nil, animations: {
             fromView.transform = offScreenLeft
             toView.transform = CGAffineTransformIdentity
             }, completion: { finished in
                 transitionContext.completeTransition(true)
-        })
+        })*/
     }
     
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning) -> NSTimeInterval {
+    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
         return 0.5
     }
     
